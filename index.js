@@ -1,18 +1,22 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const { Client, GatewayIntentBits } = require('discord.js');
+const {
+  Client,
+  GatewayIntentBits,
+  Events,
+} = require("discord.js");
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers
-  ]
+  ],
 });
 
-client.once('ready', () => {
-  console.log(`${client.user.tag} is online!`);
+client.once(Events.ClientReady, (client) => {
+  console.log(`✅ ${client.user.tag} is online!`);
 });
 
 client.login(process.env.TOKEN);
