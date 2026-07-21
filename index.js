@@ -6,6 +6,8 @@ const {
   Events,
 } = require("discord.js");
 
+const http = require("http");
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -15,8 +17,15 @@ const client = new Client({
   ],
 });
 
-// Prefix
-const PREFIX = "nox";
+// Simple web server for Render
+const PORT = process.env.PORT || 3000;
+
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("NoxBot is online!");
+}).listen(PORT, () => {
+  console.log(`🌐 Web server running on port ${PORT}`);
+});
 
 // Bot Ready
 client.once(Events.ClientReady, (client) => {
@@ -27,10 +36,10 @@ client.once(Events.ClientReady, (client) => {
 client.on(Events.MessageCreate, async (message) => {
   if (message.author.bot) return;
 
-  if (!message.content.toLowerCase().startsWith(PREFIX)) return;
+  if (!message.content.toLowerCase().startsWith("nox")) return;
 
   const args = message.content
-    .slice(PREFIX.length)
+    .slice(3)
     .trim()
     .split(/ +/);
 
